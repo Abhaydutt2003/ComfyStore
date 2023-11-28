@@ -2,16 +2,26 @@ import { Link,useRouteError } from "react-router-dom";
 
 const Error = () => {
   const error = useRouteError();
-  console.log(error);
+  //console.log(error);
   if (error.status == 404) {
     return (
-        <>
-        <h1> cannot find the page</h1>
-        <Link to = "/"> go back home???</Link>
-        </>
+        <main className="grid min-h-[100vh] place-items-center px-8">
+            <div className="text-center">
+                <p className="text-9xl text-blue-600 ">404</p>
+                <h1 className="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">Page not found</h1>
+                <p className="mt-6 text-lg leading-7">Sorry, we couldn’t find the page you’re looking for.</p>
+                <div className="mt-6 bg-purple-600 w-fit rounded-md m-auto py-3 px-3">
+                    <Link to = '/'>Go back home???</Link>
+                </div>
+            </div>
+        </main>
     );
   } else {
-    return <h1> something went wrong!!</h1>;
+    return (
+        <main>
+            <h4>there was an error!!!!!</h4>
+        </main>
+    );
   }
 };
 
