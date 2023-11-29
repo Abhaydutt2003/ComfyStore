@@ -1,4 +1,4 @@
-import { FormInput,SubmitBtn } from "../components";
+import { FormInput, SubmitBtn } from "../components";
 import { Form, Link } from "react-router-dom";
 
 const Login = () => {
