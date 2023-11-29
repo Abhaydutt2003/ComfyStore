@@ -18,9 +18,9 @@ const Error = () => {
     );
   } else {
     return (
-        <main>
-            <h4>there was an error!!!!!</h4>
-        </main>
+      <main className='grid min-h-[100vh] place-items-center px-8 '>
+      <h4 className='text-center font-bold text-4xl'>there was an error... </h4>
+    </main>
     );
   }
 };
