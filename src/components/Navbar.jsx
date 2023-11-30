@@ -2,37 +2,36 @@ import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import NavLinks from "./NavLinks";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  // const getThemeFromLocalStorage = ()=>{
-  //   return localStorage.getItem('theme') || 'winter';
-  // }
+  const getThemeFromLocalStorage = () => {
+    return localStorage.getItem("theme") || "winter";
+  };
 
-  // const [theme,setTheme] = useState(getThemeFromLocalStorage());
-  
+  const [theme, setTheme] = useState(getThemeFromLocalStorage());
+
+  const handleTheme = () => {
+    const newTheme = theme === "winter" ? "dracula" : "winter";
+    setTheme(newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // const [theme,setTheme] = useState('winter');
 
   // const handleTheme = ()=>{
-  //   const newTheme = (theme === 'winter')?'dracula':'winter';
-  //   setTheme(newTheme);
+  //   if(theme == 'dracula'){
+  //     document.documentElement.setAttribute('data-theme','winter');
+  //     setTheme('winter');
+  //   }else{
+  //     document.documentElement.setAttribute('data-theme','dracula');
+  //     setTheme('dracula');
+  //   }
   // }
-
-  // useEffect(()=>{
-  //   document.documentElement.setAttribute('data-theme',theme);
-  //   localStorage.setItem('theme',theme);
-  // },[theme])
-
-  const [theme,setTheme] = useState('winter');
-
-  const handleTheme = ()=>{
-    if(theme == 'dracula'){
-      document.documentElement.setAttribute('data-theme','winter');
-      setTheme('winter');
-    }else{
-      document.documentElement.setAttribute('data-theme','dracula');
-      setTheme('dracula');
-    }
-  }
 
   return (
     <nav className=" bg-base-200">
