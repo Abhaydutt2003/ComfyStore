@@ -6,9 +6,6 @@ const HomeLayout = () => {
     <>
     <Header></Header>
     <Navbar></Navbar>
-      <nav>
-        <span className="text-4xl text-primary">Comfy</span>
-      </nav>
       <section className=" align-element py-20">
       <Outlet></Outlet>
       </section>
