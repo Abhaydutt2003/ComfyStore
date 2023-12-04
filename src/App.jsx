@@ -13,7 +13,7 @@ import {
   Orders,
 } from "./pages";
 import { ErrorElement } from "./components";
-import { loader as landingLoader } from "./pages/Landing";
+import { landingLoader } from "./pages/Loaders";
 
 const router = createBrowserRouter([
   {

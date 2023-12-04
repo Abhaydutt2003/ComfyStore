@@ -1,18 +1,16 @@
 import {Hero} from '../components';
-import {customFetch} from '../utils';
+import {FeaturedProducts} from '../components'
 
-const url = '/products?featured=true';
 
-export const loader = async ()=>{
-    const response = await customFetch(url);
-    console.log(response);
-    const products = response.data.data;
-    return {products};
-}
+//fast refresh is enabled only if - file exports only a component
+//so i made a new file named loaders
 
 const Landing = ()=>{
     return (
+        <>
         <Hero></Hero>
+        <FeaturedProducts></FeaturedProducts>
+        </>
     );
 }
 
