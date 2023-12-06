@@ -8,3 +8,9 @@ export const landingLoader = async () => {
   const products = response.data.data;
   return { products };
 };
+
+
+export const singleProductLoader = async ({params})=>{
+  const response = await customFetch(`/products/${params.id}`);
+  return {product: response.data.data};
+}
