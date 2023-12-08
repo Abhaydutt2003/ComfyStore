@@ -13,7 +13,7 @@ import {
   Orders,
 } from "./pages";
 import { ErrorElement } from "./components";
-import { landingLoader,singleProductLoader } from "./pages/Loaders";
+import { landingLoader,singleProductLoader,productsLoader } from "./pages/Loaders";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +29,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/products",
+        loader:productsLoader,
         element: <Products></Products>,
       },
       {

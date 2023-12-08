@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { formatPrice } from "../utils";
+import { formatPrice, generateAmount } from "../utils";
 import { useState } from "react";
 
 const SingleProduct = () => {
@@ -48,7 +48,7 @@ const SingleProduct = () => {
             adds a touch of old-world charm to any space. With its classic
             design and sturdy craftsmanship, this lamp is not just a source of
             light but a statement piece that transports you to a bygone era.
-            Illuminate your surroundings with the medieval mystique of the{" "}
+            Illuminate your surroundings with the medieval mystique of the
             {title}.
           </p>
           {/* colors */}
@@ -80,9 +80,7 @@ const SingleProduct = () => {
               onChange={handleAmount}
               className=" select select-secondary select-bordered select-md"
             >
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
+              {generateAmount(20)}
             </select>
           </div>
           {/* cart button */}
