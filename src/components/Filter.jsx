@@ -1,11 +1,13 @@
 import { Form, Link, useLoaderData } from "react-router-dom";
 import FormInput from "./FormInput";
 import FormSelect from "./FormSelect";
+import FormRange from "./FormRange";
+import FormCheckbox from "./FormCheckBox";
 
 const Filter = () => {
   const { meta } = useLoaderData();
   return (
-    <Form className=" bg-base-200 rounded-md px-8 py-4 grid gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center">
+    <Form className=" bg-base-200 rounded-md px-8 py-4 grid gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  items-center">
       <FormInput
         type="search"
         label="search product"
@@ -31,11 +33,17 @@ const Filter = () => {
         list={["a-z", "z-a", "high", "low"]}
         size="select-sm"
       />
-      <button type="submit" className="btn btn-primary btn-sm">
-        search
+      <FormRange name="price" label="select-price" size="range-sm"></FormRange>
+      <FormCheckbox
+        name="shipping"
+        label="free-shipping"
+        size="checkbox-sm"
+      ></FormCheckbox>
+      <button type="submit" className="btn btn-primary btn-sm ">
+        SEARCH
       </button>
-      <Link to="/products" className="btn btn-acent btn-sm">
-        reset
+      <Link to="/products" className="btn  btn-accent btn-sm ">
+        RESET
       </Link>
     </Form>
   );
