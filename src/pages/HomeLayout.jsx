@@ -1,14 +1,19 @@
-import {Outlet } from "react-router-dom";
-import {Header,Navbar} from '../components'
+import { Outlet, useNavigation } from "react-router-dom";
+import { Header, Navbar, Loading } from "../components";
 
 const HomeLayout = () => {
+  const isLoading = useNavigation().state == "loading";
   return (
     <>
-    <Header></Header>
-    <Navbar></Navbar>
-      <section className=" align-element py-20">
-      <Outlet></Outlet>
-      </section>
+      <Header></Header>
+      <Navbar></Navbar>
+      {isLoading ? (
+        <Loading></Loading>
+      ) : (
+        <section className=" align-element py-20">
+          <Outlet></Outlet>
+        </section>
+      )}
     </>
   );
 };
