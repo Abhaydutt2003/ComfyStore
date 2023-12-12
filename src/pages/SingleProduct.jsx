@@ -1,6 +1,9 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { formatPrice, generateAmount } from "../utils";
 import { useState } from "react";
+import { addItem } from "../features/cart/cartSlice";
+import { useDispatch } from "react-redux";
+
 
 const SingleProduct = () => {
   const { product } = useLoaderData();
@@ -9,10 +12,24 @@ const SingleProduct = () => {
   //state to handle the color
   const [productColor, setProductColor] = useState(colors[0]);
   //state to handle the amount
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState(1);
   const handleAmount = (event) => {
     setAmount(parseInt(event.target.value));
   };
+  const cartProduct = {
+    cartID: product.id + productColor,
+    productID: product.id,
+    image,
+    title,
+    price,
+    amount,
+    productColor,
+    company,
+  }
+  const dispatch = useDispatch();
+  const addToCart = ()=>{
+    dispatch(addItem({product:cartProduct}));
+  }
   return (
     <section>
       <div className="text-md breadcrumbs">
@@ -86,7 +103,7 @@ const SingleProduct = () => {
           {/* cart button */}
           <div
             className=" mt-10 btn btn-secondary "
-            onClick={() => console.log("added to bag")}
+            onClick={addToCart}
           >
             ADD TO BAG
           </div>

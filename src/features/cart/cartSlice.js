@@ -10,16 +10,59 @@ const defualtState = {
   orderTotal: 0,
 };
 
+const getCart = () => {
+  return JSON.parse(localStorage.getItem("cart")) || defualtState;
+};
+
 const cartSlice = createSlice({
   name: "cart",
-  initialState: defualtState,
+  initialState: getCart,
   reducers: {
     addItem: (state, action) => {
-      console.log(action.payload);
+      const { product } = action.payload;
+      const item = state.cartItems.find((item) => {
+        return item.cartID == product.cartID;
+      });
+      if (item) {
+        item.amount += product.amount;
+      } else {
+        state.cartItems.push(product);
+      }
+      state.numItemsCart += product.amount;
+      state.cartTotal += product.price * product.amount;
+      cartSlice.caseReducers.calculateTotals(state);
+      localStorage.setItem("cart", JSON.stringify(state));
+      toast.success("Item added to cart");
     },
-    clearCart: (state) => {},
-    removeItem: (state, action) => {},
-    editItem: (state, action) => {},
+    calculateTotals: (state) => {
+      state.tax = 0.1 * state.cartTotal;
+      state.orderTotal = state.cartTotal + state.shipping + state.tax;
+    },
+    clearCart: (state) => {
+      localStorage.setItem("cart", JSON.stringify(defualtState));
+      return defualtState;
+    },
+    removeItem: (state, action) => {
+      const { cartID } = action.payload;
+      const product = state.cartItems.find((item) => {
+        return item.cartID == cartID;
+      });
+      state.numItemsCart -= product.amount;
+      state.cartTotal = product.price * product.amount;
+      cartSlice.caseReducers.calculateTotals(state);
+      toast.info("Item removed from cart");
+    },
+    editItem: (state, action) => {
+      const { cartID, amount } = action.payload;
+      const item = state.cartItem.find((item) => {
+        return item.cartID == cartID;
+      });
+      state.numItemsCart += amount - item.amount;
+      state.cartTotal += item.price * (amount - item.amount);
+      item.amount = amount;
+      cartSlice.caseReducers.calculateTotals(state);
+      toast.info("Cart updated");
+    },
   },
 });
 export const { addItem, clearCart, removeItem, editItem } = cartSlice.actions;
