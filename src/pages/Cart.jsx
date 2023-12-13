@@ -11,19 +11,22 @@ const Cart = () => {
     return <SectionTitle text="Your cart is Empty" />;
   }
   return (
-    <SectionTitle text="Shopping Cart">
-      <div>
-        <CartItemsList></CartItemsList>
+    <>
+      <SectionTitle text="Shopping Cart" />
+      <div className="mt-8 grid grid-gap-8 lg:grid-cols-12">
+        <div className="lg:col-span-8">
+          <CartItemsList></CartItemsList>
+        </div>
+        <div className="lg:col-span-4 lg:pl-10">
+          <CartTotals></CartTotals>
+          {user ? (
+            <Link to="/checkout"  className='btn btn-primary btn-block mt-8'> Proceed to Checkout</Link>
+          ) : (
+            <Link to="/login" className='btn btn-primary btn-block mt-8'>Please login</Link>
+          )}
+        </div>
       </div>
-      <div>
-        <CartTotals></CartTotals>
-        {user ? (
-          <Link to="/checkout"> Proceed to Checkout</Link>
-        ) : (
-          <Link to="/login">Please login</Link>
-        )}
-      </div>
-    </SectionTitle>
+    </>
   );
 };
 export default Cart;

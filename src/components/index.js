@@ -11,6 +11,6 @@ export {default as Filter} from './Filter';
 export {default as ProductsContainer} from './ProductsContainer';
 export {default as Loading } from './Loading';
 export {default as CartItemsList} from './CartItemsList';
-export {default as CartTotals} from './CartItemsList';
+export {default as CartTotals} from './CartTotals';
 export {default as CartItem} from './CartItemsList';
 export {default as SectionTitle} from './SectionTtitle';
