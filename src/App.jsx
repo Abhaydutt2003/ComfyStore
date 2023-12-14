@@ -13,7 +13,13 @@ import {
   Orders,
 } from "./pages";
 import { ErrorElement } from "./components";
-import { landingLoader,singleProductLoader,productsLoader } from "./pages/Loaders";
+import {
+  landingLoader,
+  singleProductLoader,
+  productsLoader,
+} from "./pages/Loaders";
+import { registerAction, loginAction } from "./pages/actions";
+import { store } from "./store";
 
 const router = createBrowserRouter([
   {
@@ -24,18 +30,18 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing></Landing>,
-        loader:landingLoader,
-        errorElement:ErrorElement,
+        loader: landingLoader,
+        errorElement: ErrorElement,
       },
       {
         path: "/products",
-        loader:productsLoader,
+        loader: productsLoader,
         element: <Products></Products>,
       },
       {
         path: "/products/:id",
         element: <SingleProduct></SingleProduct>,
-        loader:singleProductLoader
+        loader: singleProductLoader,
       },
       {
         path: "/cart",
@@ -56,11 +62,13 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login></Login>,
     errorElement: <Error></Error>,
+    action: loginAction(store),
   },
   {
     path: "/register",
     element: <Register />,
     errorElement: <Error />,
+    action: registerAction,
   },
 ]);
 

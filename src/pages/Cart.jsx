@@ -3,7 +3,9 @@ import { SectionTitle, CartItemsList, CartTotals } from "../components";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const user = null;
+  const user = useSelector((state)=>{
+    return state.userState.user;
+  });
   const numItemsCart = useSelector((state) => {
     return state.cartSlice.numItemsCart;
   });

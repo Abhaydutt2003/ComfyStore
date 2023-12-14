@@ -2,40 +2,19 @@ import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import NavLinks from "./NavLinks";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../features/user/useSlice";
 
 const Navbar = () => {
-  const getThemeFromLocalStorage = () => {
-    return localStorage.getItem("theme") || "winter";
-  };
-
-  const [theme, setTheme] = useState(getThemeFromLocalStorage());
-
+  const dispatch = useDispatch();
   const handleTheme = () => {
-    const newTheme = theme === "winter" ? "dracula" : "winter";
-    setTheme(newTheme);
+    dispatch(toggleTheme());
   };
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  // const [theme,setTheme] = useState('winter');
-
-  // const handleTheme = ()=>{
-  //   if(theme == 'dracula'){
-  //     document.documentElement.setAttribute('data-theme','winter');
-  //     setTheme('winter');
-  //   }else{
-  //     document.documentElement.setAttribute('data-theme','dracula');
-  //     setTheme('dracula');
-  //   }
-  // }
-
-  const itemsCart = useSelector((state)=>{
+  const itemsCart = useSelector((state) => {
     return state.cartSlice.numItemsCart;
+  });
+  const isDarkTheme = useSelector((state) => {
+    return state.userState.theme == "dracula";
   });
   return (
     <nav className=" bg-base-200">
@@ -70,7 +49,11 @@ const Navbar = () => {
           {/* theme icon */}
           {/* cart */}
           <label className="swap swap-rotate">
-            <input type="checkbox" onChange={handleTheme}></input>
+            <input
+              type="checkbox"
+              onChange={handleTheme}
+              defaultChecked={isDarkTheme}
+            ></input>
             <BsSunFill className="swap-on h-4 w-4" />
             <BsMoonFill className="swap-off h-4 w-4" />
           </label>
@@ -80,7 +63,7 @@ const Navbar = () => {
           >
             <div className=" indicator">
               <span className="badge badge-sm badge-primary indicator-item">
-               {itemsCart}
+                {itemsCart}
               </span>
               <BsCart3 className="h-6 w-6"></BsCart3>
             </div>
