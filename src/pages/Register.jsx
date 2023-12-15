@@ -12,7 +12,7 @@ const Register = () => {
         <h4 className="text-center text-3xl font-bold">REGISTER</h4>
         <FormInput
           label="username"
-          name="usename"
+          name="username"
           type="text"
           defaultValue=""
         ></FormInput>
