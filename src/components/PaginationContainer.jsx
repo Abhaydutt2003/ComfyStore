@@ -17,7 +17,7 @@ const PaginationContainer = () => {
     } else if (action === "forward") {
       newPage = pageNumber + 1 > pageCount ? 1 : pageNumber + 1;
     } else {
-      newPage = action;
+      newPage = pageNumber;
     }
     const searchParams = new URLSearchParams(search);
     searchParams.set("page", newPage);
@@ -46,7 +46,7 @@ const PaginationContainer = () => {
               className={`btn btn-sm sm:btn-md join-item ${
                 pageNumber == page ? " bg-base-300 border-base-300" : ""
               }`}
-              onClick={() => handlePageChange(pageNumber, pageNumber)}
+              onClick={() => handlePageChange(pageNumber, 'exact')}
             >
               {pageNumber}
             </button>

@@ -12,7 +12,7 @@ const Checkout = ()=>{
     return (
         <>
         <SectionTitle text = "Place your order"></SectionTitle>
-        <div className=" mt-8 grid md:grid-cols-2">
+        <div className=" gap-8 mt-8 grid md:grid-cols-2">
             <CheckoutForm></CheckoutForm>
             <CartTotals></CartTotals>
         </div>

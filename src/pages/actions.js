@@ -46,13 +46,14 @@ export const checkoutAction =
     const formData = await request.formData();
     const { name, address } = Object.fromEntries(formData);
     const user = store.getState().userState.user;
-    const { cartItems, orderTotal, numItemsCart } = store.getState().cartState;
+    const { cartItems, orderTotal, numItemsCart } = store.getState().cartSlice;
     const info = {
       name,
       address,
-      chargeTotal: formatPrice(orderTotal),
+      chargeTotal: orderTotal,
+      orderTotal: formatPrice(orderTotal),
       cartItems,
-      numItemsCart,
+      numItemsInCart: numItemsCart,
     };
     try {
       const resp = await customFetch.post(
@@ -74,6 +75,10 @@ export const checkoutAction =
         error?.response?.data?.error?.message ||
         "There was an error placing your order";
       toast.error(errorMessage);
+      const status = error?.response?.status;
+      if (status == 401 || status == 403) {
+        return redirect("/login");
+      }
       return null;
     }
   };

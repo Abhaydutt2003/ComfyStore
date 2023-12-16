@@ -17,7 +17,8 @@ import {
   landingLoader,
   singleProductLoader,
   productsLoader,
-  checkoutLoader
+  checkoutLoader,
+  ordersLoader
 } from "./pages/Loaders";
 import { registerAction, loginAction,checkoutAction } from "./pages/actions";
 import { store } from "./store";
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
       {
         path: "/orders",
         element: <Orders />,
+        loader:ordersLoader(store)
       },
     ],
   },

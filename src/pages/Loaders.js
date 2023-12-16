@@ -36,3 +36,36 @@ export const checkoutLoader = (store) => () => {
   }
   return null;
 };
+
+export const ordersLoader =
+  (store) =>
+  async ({ request }) => {
+    const user = store.getState().userState.user;
+    if (!user) {
+      toast.warn("You must be logged in to view the orders");
+      return redirect("/login");
+    }
+    //LOOK
+    const params = Object.fromEntries([
+      ...new URL(request.url).searchParams.entries()
+    ]);
+    try {
+      const response = await customFetch.get("/orders", {
+        params,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+      //console.log({ orders: response.data.data, meta: response.data.meta });
+      return { orders: response.data.data, meta: response.data.meta };
+    } catch (error) {
+      const errorMessage =
+        error?.response?.message || "There was an error getting you orders";
+      toast.error(errorMessage);
+      const status = error?.response?.status;
+      if (status == 401 || status == 403) {
+        return redirect("/login");
+      }
+      return null; 
+    }
+  };
