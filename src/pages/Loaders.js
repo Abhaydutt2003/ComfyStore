@@ -5,28 +5,88 @@ import { toast } from "react-toastify";
 const url = "products?featured=true";
 const url2 = "/products";
 
-export const landingLoader = async () => {
-  const response = await customFetch(url);
-  //console.log(response);
+const featuredProductsQuery = {
+  queryKey: ["featuredProducts"],
+  queryFn: () => customFetch(url),
+};
+
+const singleProductQuery = (id) => {
+  return {
+    queryKey: ["singleProduct", id],
+    queryFn: () => customFetch.get(`/products/${id}`),
+  };
+};
+
+const allProductsQuery = (queryParams) => {
+  const { search, category, company, sort, price, shipping, page } =
+    queryParams;
+  return {
+    queryKey: [
+      "products",
+      search ?? "",
+      category ?? "all",
+      company ?? "all",
+      sort ?? "a-z",
+      price ?? 100000,
+      shipping ?? false,
+      page ?? 1,
+    ],
+    queryFn: () => customFetch(url2, { params: queryParams }),
+  };
+};
+
+const ordersQuery = (params, user) => {
+  return {
+    queryKey: [
+      "orders",
+      user.username,
+      params.page ? parseInt(params.page) : 1,
+    ],
+    queryFn: () =>
+      customFetch.get("/orders", {
+        params,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }),
+  };
+};
+
+// export const landingLoader = async () => {
+//   const response = await customFetch(url);
+//   //console.log(response);
+//   const products = response.data.data;
+//   return { products };
+// };
+export const landingLoader = (queryClient) => async () => {
+  const response = await queryClient.ensureQueryData(featuredProductsQuery);
   const products = response.data.data;
   return { products };
 };
 
-export const singleProductLoader = async ({ params }) => {
-  const response = await customFetch(`/products/${params.id}`);
-  return { product: response.data.data };
-};
+export const singleProductLoader =
+  (queryClient) =>
+  async ({ params }) => {
+    const response = await queryClient.ensureQueryData(
+      singleProductQuery(params.id)
+    );
+    return { product: response.data.data };
+  };
 
-export const productsLoader = async ({ request }) => {
-  //get all the params passed
-  const params = Object.fromEntries([
-    ...new URL(request.url).searchParams.entries(),
-  ]);
-  const response = await customFetch(url2, { params });
-  const products = response.data.data;
-  const meta = response.data.meta;
-  return { products, meta, params };
-};
+export const productsLoader =
+  (queryClient) =>
+  async ({ request }) => {
+    //get all the params passed
+    const params = Object.fromEntries([
+      ...new URL(request.url).searchParams.entries(),
+    ]);
+    const response = await queryClient.ensureQueryData(
+      allProductsQuery(params)
+    );
+    const products = response.data.data;
+    const meta = response.data.meta;
+    return { products, meta, params };
+  };
 
 export const checkoutLoader = (store) => () => {
   const user = store.getState().userState.user;
@@ -38,7 +98,7 @@ export const checkoutLoader = (store) => () => {
 };
 
 export const ordersLoader =
-  (store) =>
+  (store, queryClient) =>
   async ({ request }) => {
     const user = store.getState().userState.user;
     if (!user) {
@@ -47,15 +107,12 @@ export const ordersLoader =
     }
     //LOOK
     const params = Object.fromEntries([
-      ...new URL(request.url).searchParams.entries()
+      ...new URL(request.url).searchParams.entries(),
     ]);
     try {
-      const response = await customFetch.get("/orders", {
-        params,
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      const response = await queryClient.ensureQueryData(
+        ordersQuery(params, user)
+      );
       //console.log({ orders: response.data.data, meta: response.data.meta });
       return { orders: response.data.data, meta: response.data.meta };
     } catch (error) {
@@ -66,6 +123,6 @@ export const ordersLoader =
       if (status == 401 || status == 403) {
         return redirect("/login");
       }
-      return null; 
+      return null;
     }
   };
